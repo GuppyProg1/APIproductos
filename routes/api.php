@@ -15,13 +15,21 @@ Route::middleware('auth:api')->group(function () {
 
     // GET /productos/{id} -> show (acceso: admin y usuario)
     Route::get('productos/{id}', [ProductoBaseController::class, 'show'])->middleware('role:admin,usuario');
+});
+
+Route::middleware('auth:api')->group(function () {
 
     // PUT /productos/{id} -> update (acceso: solo admin)
     Route::put('productos/{id}', [ProductoBaseController::class, 'update'])->middleware('role:admin');
+});
+
+Route::middleware('auth:api')->group(function () {
 
     // DELETE /productos/{id} -> destroy (acceso: solo admin)
     Route::delete('productos/{id}', [ProductoBaseController::class, 'destroy'])->middleware('role:admin');
+});
 
+Route::middleware('auth:api')->group(function () {
 
     Route::get('me', [AuthController::class, 'me']);
 
