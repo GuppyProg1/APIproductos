@@ -52,13 +52,26 @@ class ProductoBaseController extends BaseController
             'data'=> $producto]);
     }
 
+    
     public function update(Request $request, String $id){
-
         $producto = Producto::find($id);
 
-         if(!$producto){
+        if(!$producto){
             return response()->json([
-            'message' => "No se encontro el producto solicitado con id ($id)"], 404);
+            'message' => "No se encontro el producto solicitado con id ($id)"
+            ], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'sometimes|string|max:100',
+            'precio' => 'sometimes|numeric|min:0'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Errores de validación',
+                'errors' => $validator->errors()
+            ], 422);
         }
 
         $producto->update([
@@ -68,7 +81,8 @@ class ProductoBaseController extends BaseController
 
         return response()->json([
             'message' => "Producto con id ($id) actualizado correctamente",
-            'data'=> $producto]);
+            'data'=> $producto
+        ]);
     }
 
     public function destroy(String $id){
