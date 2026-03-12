@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
         );
 
          User::updateOrCreate(
-            ['email' => ' operador@api.com'],
+            ['email' => 'operador@api.com'],
             [
                 'name' => 'Operador',
                 'password' => Hash::make('password'),
