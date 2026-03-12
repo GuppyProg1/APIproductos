@@ -22,8 +22,8 @@ class ProductoBaseController extends BaseController
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:100',
             'precio' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0', // stock agregado
-            'descripcion' => 'nullable|string'   //  descripcion agregado
+            'stock' => 'required|integer|min:0', // campo stock agregado
+            'descripcion' => 'nullable|string'   //  campo descripcion agregado
         ]);
 
         if ($validator->fails()) {
@@ -68,7 +68,9 @@ class ProductoBaseController extends BaseController
 
         $validator = Validator::make($request->all(), [
             'nombre' => 'sometimes|string|max:100',
-            'precio' => 'sometimes|numeric|min:0'
+            'precio' => 'sometimes|numeric|min:0',
+            'stock' => 'sometimes|integer|min:0',           // nuevo campo stock
+            'descripcion' => 'sometimes|string|nullable'    // nuevo campo descripcion
         ]);
 
         if ($validator->fails()) {
@@ -78,10 +80,8 @@ class ProductoBaseController extends BaseController
             ], 422);
         }
 
-        $producto->update([
-            'nombre' => $request->input('nombre', $producto->nombre),
-            'precio' => $request->input('precio', $producto->precio),
-        ]);
+        // Con fillable, todos los campos se actualizan directamente
+        $producto->update($validator->validated());
 
         return response()->json([
             'message' => "Producto con id ($id) actualizado correctamente",
