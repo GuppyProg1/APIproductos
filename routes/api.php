@@ -28,9 +28,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('productos', [ProductoBaseController::class, 'store'])
         ->middleware('role:admin,operador');
 
-    // GET /productos/{id} -> admin, usuario
+    // GET /productos/{id} -> admin, usuario, operador
     Route::get('productos/{id}', [ProductoBaseController::class, 'show'])
-        ->middleware('role:admin,usuario');
+        ->middleware('role:admin,usuario,operador');
 
     // PUT /productos/{id} -> admin
     Route::put('productos/{id}', [ProductoBaseController::class, 'update'])
