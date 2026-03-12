@@ -39,3 +39,15 @@ Route::middleware('auth:api')->group(function () {
     Route::post('productos', [ProductoBaseController::class, 'store'])->middleware('role:admin,operador');
 });
 
+Route::middleware('auth:api')->group(function () {
+
+    // POST /logout -> logout (acceso: usuario autenticado)
+    Route::post('logout', [AuthController::class, 'logout'])->middleware('role:usuario');
+});
+
+Route::middleware('auth:api')->group(function () {
+
+    // POST /refresh -> refresh (acceso: usuario autenticado)
+    Route::post('refresh', [AuthController::class, 'refresh'])->middleware('role:usuario');
+});
+
