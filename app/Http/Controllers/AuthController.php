@@ -37,8 +37,7 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        Auth::logout();
-
+       
         try {
            JWTAuth::invalidate(JWTAuth::getToken());
            return response()->json(['message' => 'Logout exitoso'], 200);
@@ -46,4 +45,16 @@ class AuthController extends Controller
             return response()->json(['message' => 'Error al cerrar sesión'], 500);
         }
     }
+
+    public function refresh(){
+
+            $newToken = JWTAuth::refresh(JWTAuth::getToken());
+            return response()->json([
+                'message' => 'Token refrescado correctamente',
+                'token' => $newToken,
+            ]);
+
+    }
+
+
 }
