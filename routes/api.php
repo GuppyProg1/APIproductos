@@ -13,14 +13,14 @@ Route::post('login',[AuthController::class, 'login']);
 //Autenticadas
 Route::middleware('auth:api')->group(function () {
 
-    // GET /productos/{id} -> show (acceso: admin y usuario)
-    Route::get('productos/{id}', [ProductoBaseController::class, 'show'])->middleware('role:admin,usuario');
+    // GET /productos/{id} -> show (acceso: admin, usuario, y operador)
+    Route::get('productos/{id}', [ProductoBaseController::class, 'show'])->middleware('role:admin,usuario,operador');
 });
 
 Route::middleware('auth:api')->group(function () {
 
-    // PUT /productos/{id} -> update (acceso: solo admin)
-    Route::put('productos/{id}', [ProductoBaseController::class, 'update'])->middleware('role:admin');
+    // PUT /productos/{id} -> update (acceso: admin y operador)
+    Route::put('productos/{id}', [ProductoBaseController::class, 'update'])->middleware('role:admin,operador');
 });
 
 Route::middleware('auth:api')->group(function () {
@@ -33,8 +33,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('me', [AuthController::class, 'me']);
 
-    //solo consulta: admin y usuario
-    Route::get('productos', [ProductoBaseController::class, 'index'])->middleware('role:admin,usuario');
-    Route::post('productos', [ProductoBaseController::class, 'store'])->middleware('role:admin');
+    // GET /productos -> index (acceso: admin, usuario, y operador)
+    Route::get('productos', [ProductoBaseController::class, 'index'])->middleware('role:admin,usuario,operador');
+    // POST /productos -> store (acceso: admin y operador)
+    Route::post('productos', [ProductoBaseController::class, 'store'])->middleware('role:admin,operador');
 });
 
