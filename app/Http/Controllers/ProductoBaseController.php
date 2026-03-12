@@ -21,7 +21,9 @@ class ProductoBaseController extends BaseController
      public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:100',
-            'precio' => 'required|numeric|min:0'
+            'precio' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0', // stock agregado
+            'descripcion' => 'nullable|string'   //  descripcion agregado
         ]);
 
         if ($validator->fails()) {
@@ -31,6 +33,7 @@ class ProductoBaseController extends BaseController
             ], 422);
         }
 
+        // Con fillable, todo se guarda directamente
         $producto = Producto::create($validator->validated());
 
         return response()->json([
