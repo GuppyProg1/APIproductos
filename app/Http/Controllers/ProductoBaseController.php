@@ -17,16 +17,25 @@ class ProductoBaseController extends BaseController
             'data'=> $productos,]);
     }
 
-    public function store(Request $request){
-
-        $productos = Producto::create([
-            'nombre' => $request->input('nombre','Producto sin nombre'),
-            'precio' => $request->input('precio',0),
+     public function store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string|max:100',
+            'precio' => 'required|numeric|min:0'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Errores de validación',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $producto = Producto::create($validator->validated());
 
         return response()->json([
             'message' => 'Producto creado correctamente',
-            'data'=> $productos,], 201);
+            'data'=> $producto
+        ], 201);
     }
 
     public function show(String $id){
