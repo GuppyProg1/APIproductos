@@ -8,7 +8,7 @@ class AddLoginCodigoToUsuariosTabla extends Migration{
 
     public function up()
     {
-       Schema::table('usuarios_tabla', function (Blueprint $table) {
+       Schema::table('users', function (Blueprint $table) {
 
             // columna para guardar el código de verificación
             $table->string('login_code', 6)->nullable()->after('password');
@@ -18,7 +18,7 @@ class AddLoginCodigoToUsuariosTabla extends Migration{
     }
 
     public function down(){
-         Schema::table('usuarios_tabla', function (Blueprint $table) {
+         Schema::table('users', function (Blueprint $table) {
 
             // eliminar la columna si se revierte la migración
             $table->dropColumn('login_code');
