@@ -62,7 +62,6 @@ class AuthController extends Controller
     }
 
     public function refresh(){
-
             $newToken = JWTAuth::refresh(JWTAuth::getToken());
             return response()->json([
                 'message' => 'Token refrescado correctamente',

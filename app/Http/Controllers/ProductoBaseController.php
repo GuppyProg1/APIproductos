@@ -38,6 +38,9 @@ class ProductoBaseController extends BaseController
         // Con fillable, todo se guarda directamente
         $producto = Producto::create($validator->validated());
 
+         // enviar notificación por correo
+         Mail::to('admin@api.com')->send(new ProductoCreadoMail($producto));
+
         return response()->json([
             'message' => 'Producto creado correctamente',
             'data'=> $producto
@@ -107,7 +110,5 @@ class ProductoBaseController extends BaseController
         return response()->json([
             'message' => "Producto con id ($id) ha sido eliminado"]);
     }
-
-
 
 }

@@ -17,6 +17,6 @@ class ProductoCreadoMail extends Mailable{
 
     public function build(){
         return $this->subject('Nuevo producto creado')
-                    ->view('emails.producto_creado');
+                    ->view('email\producto_creado');
     }
 }
