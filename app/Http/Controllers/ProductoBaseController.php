@@ -43,17 +43,19 @@ class ProductoBaseController extends BaseController
     }
 
     public function show(String $id){
-
         $producto = Producto::find($id);
 
         if(!$producto){
             return response()->json([
-            'message' => "No se encontro el producto solicitado con id ($id)"], 404);
+                'message' => "No se encontró el producto con id ($id)",
+                'data' => [] // array vacío en caso de no existir
+            ], 404);
         }
 
         return response()->json([
             'message' => "Producto encontrado con id ($id)",
-            'data'=> $producto]);
+            'data'=> [$producto->toArray()]  // <-- IMPORTANTE
+        ], 200);
     }
 
     
