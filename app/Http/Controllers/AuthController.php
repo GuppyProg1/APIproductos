@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
@@ -68,5 +69,41 @@ class AuthController extends Controller
                 'token' => $newToken,
             ]);
 
+    }
+
+    public function verifyCode(Request $request){
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'code' => 'required|digits:6'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = User::where('email', $request->email)
+                    ->where('login_code', $request->code)
+                    ->first();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'Código incorrecto'
+            ], 401);
+        }
+
+        // generar token JWT
+        $token = JWTAuth::fromUser($user);
+
+        // limpiar código después de usarlo
+        $user->login_code = null;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Verificación exitosa',
+            'token' => $token,
+            'user' => $user
+        ]);
     }
 }
